@@ -1,42 +1,64 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The DamMC Server - Powered by DamVan.ca</title>
-    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Lucide Icons --><script src="https://unpkg.com/lucide@latest"></script>
+    <title>The DamMinecraft SMP - Powered by DamVan.ca</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
-        /* Define a consistent primary brand color: Cyan */
+        /* Define a consistent primary brand color: Custom Purple */
         .color-accent {
-            color: #22d3ee; /* cyan-400 */
+            color: #5711C0;
         }
         .bg-accent {
-            background-color: #22d3ee; /* cyan-400 */
+            background-color: #5711C0;
         }
         .border-accent {
-            border-color: #22d3ee; /* cyan-400 */
+            border-color: #5711C0;
         }
-        /* Custom Dark Blue/Black color for glass backgrounds (Darker base: #1B1D25) */
-        /* RGB values for #1B1D25 are 27, 29, 37 */
-        .bg-glass-dark-30 {
-            background-color: rgba(27, 29, 37, 0.65); /* Increased base opacity & darker color */
+        /* Lighter shade for borders/hovers */
+        .border-accent-light {
+            border-color: #7d48d4; 
         }
-        .bg-glass-dark-40 {
-            background-color: rgba(27, 29, 37, 0.85); /* Increased opacity for cards */
+        /* Darker shade for hover */
+        .bg-accent-dark:hover {
+            background-color: #4a0e9f;
         }
-        .bg-glass-dark-20 {
-            background-color: rgba(27, 29, 37, 0.45); /* Increased base opacity & darker color */
+        /* Lighter shade for hover */
+        .bg-accent-light-hover:hover {
+            background-color: #7d48d4;
         }
-        .bg-glass-dark-60 {
-            background-color: rgba(27, 29, 37, 0.90); /* Increased opacity for buttons */
+
+        /* Custom Dark Blue/Gray color for glass backgrounds (matching provided image) */
+        /* RGB values for #272A35 are 39, 42, 53 */
+        .bg-glass-nav { /* 95% opacity for "solid" navbar */
+             background-color: rgba(39, 42, 53, 0.95);
+        }
+        .bg-glass-dark-60 { /* 60% opacity for header/sections */
+            background-color: rgba(39, 42, 53, 0.60);
+        }
+        .bg-glass-dark-85 { /* 85% opacity for cards */
+            background-color: rgba(39, 42, 53, 0.85);
+        }
+        .bg-glass-dark-40 { /* 40% opacity for nav/footer (not used, using bg-glass-nav) */
+            background-color: rgba(39, 42, 53, 0.40);
+        }
+        .bg-glass-ui { /* 80% opacity for UI elements like IP box */
+             background-color: rgba(39, 42, 53, 0.80);
         }
 
 
         /* Ensuring HTML and body cover the full viewport */
         html {
             height: 100%; 
+            scroll-behavior: smooth; /* For smooth scrolling */
         }
 
         body {
@@ -55,6 +77,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            /* Fixed Caravan Image URL */
             background-image: url('https://i.gaw.to/content/photos/42/58/425885-dodge-grand-caravan-2020-pour-une-derniere-fois.jpg?460x287');
             background-size: cover;
             background-position: center;
@@ -69,153 +92,382 @@
             -webkit-backdrop-filter: blur(8px); /* For Safari support */
         }
 
-        /* Minecraft background removed from here */
-        .hero-background::before {
-            content: none; 
-        }
-
         .card-shadow {
-            /* Cleaner, less dramatic shadow */
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
+
+        /* Accordion Styles */
+        details.glass-effect {
+            background-color: rgba(39, 42, 53, 0.70); /* 70% opacity for accordions */
+            border-top: 2px solid rgba(125, 72, 212, 0.3);
+        }
+        details summary {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            list-style: none; /* Remove default triangle */
+            position: relative;
+        }
+        details summary::-webkit-details-marker {
+            display: none; /* Hide default marker (Safari) */
+        }
+        /* Custom + / x icon */
+        details summary::after {
+            content: '+';
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: 1.5em;
+            color: #5711C0; /* Purple accent */
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: transform 0.2s ease;
+        }
+        details[open] summary::after {
+            content: 'x';
+            transform: translateY(-50%) rotate(45deg);
+        }
+        .accordion-content {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            border-top: 1px solid rgba(125, 72, 212, 0.2);
+        }
+
+        /* Blur class for IP */
+        .blurred {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+            user-select: none; /* Prevent selection when blurred */
+            -webkit-user-select: none;
+        }
+
     </style>
 </head>
 <body class="text-white">
 
-    <!-- Sticky Navigation Bar (Glass effect) --><nav class="sticky top-0 z-50 bg-glass-dark-20 glass-effect shadow-xl border-b border-gray-800">
+    <!-- Solid Glass Navbar -->
+    <nav class="sticky top-0 z-50 bg-glass-nav glass-effect shadow-xl border-b border-black/20">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <!-- UPDATED href to point to the full website domain --><a href="https://playmc.damvan.ca" class="text-2xl font-bold tracking-wider text-white">
-                <span class="color-accent">DamMC</span>
+            
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-bold tracking-wider text-white">
+                <span class="color-accent">Dam</span>MC
             </a>
-            <div class="space-x-4">
+            <div class="space-x-4 flex items-center">
                 <a href="#features" class="text-gray-300 hover:color-accent transition duration-200 text-sm font-medium hidden sm:inline">Features</a>
+                <a href="#rules" class="text-gray-300 hover:color-accent transition duration-200 text-sm font-medium hidden sm:inline">Rules</a>
                 <a href="mailto:contact@damvan.ca" class="text-gray-300 hover:color-accent transition duration-200 text-sm font-medium hidden sm:inline">Contact</a>
-                <!-- Link back to the parent company --><a href="https://damvan.ca" target="_blank" class="bg-glass-dark-60 hover:bg-blue-900/70 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-200 border border-gray-700">
+                
+                <!-- Discord Button (Always Visible) -->
+                <a href="https://discord.gg/psrNq7w69q" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-200 inline-flex items-center space-x-2">
+                    <i data-lucide="message-square" class="w-4 h-4"></i>
+                    <span>Join Discord</span>
+                </a>
+                
+                <a href="https://damvan.ca" target="_blank" class="bg-glass-ui hover:bg-glass-dark-85 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-200 border border-gray-700 hidden sm:inline">
                     Go to Damvan.ca
                 </a>
             </div>
         </div>
     </nav>
     
-    <!-- Header & Hero Section (Glass effect) --><header class="hero-background pt-16 pb-28 md:pt-24 md:pb-40 relative overflow-hidden bg-glass-dark-30 glass-effect">
+    
+    <!-- Hero Section -->
+    <header class="hero-background pt-16 pb-28 md:pt-24 md:pb-40 relative overflow-hidden bg-glass-dark-60 glass-effect">
         <div class="container mx-auto px-4 text-center relative z-10">
-            <!-- Main Title --><h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">
-                The <span class="color-accent">DamMinecraft</span> Server
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">
+                The <span class="color-accent">DamMinecraft</span> SMP
             </h1>
-            <!-- Attribution Line for Official Service (Now a link) --><p class="text-sm font-medium mb-3">
+            
+            <p class="text-sm font-medium mb-3">
                 An Official Service of the <a href="https://damvan.ca" target="_blank" class="color-accent hover:underline font-semibold">DamVan Company</a>.
             </p>
-            <!-- Server Description / Mission Statement (Updated for Casual Gamers) --><p class="text-xl md:text-2xl text-gray-400 font-light mb-12 max-w-4xl mx-auto">
-                A premier <strong>Java and Bedrock crossplay Survival World</strong> welcoming <strong>E-Sports communities, dedicated builders, and casual gamers</strong>.
+            
+            <p class="text-xl md:text-2xl text-gray-400 font-light mb-12 max-w-4xl mx-auto">
+                A premier <strong>Java and Bedrock crossplay SMP</strong> welcoming <strong>E-Sports communities, dedicated builders, and casual gamers</strong>.
             </p>
 
-            <!-- === CHANGED: Changed 'inline-flex' to 'flex' for proper mobile centering === -->
-            <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <!-- IP Display --><div id="ip-display" class="bg-glass-dark-60 text-lg font-mono px-6 py-3 rounded-lg border-2 border-accent/70 color-accent shadow-xl card-shadow">
-                    playmc.damvan.ca
-                </div>
+            <!-- Main CTA Button -> Scrolls to Rules -->
+            <div class="inline-flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#rules" class="flex items-center space-x-2 bg-accent bg-accent-dark text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.03] shadow-lg active:scale-[0.98]">
+                    <i data-lucide="scroll" class="w-5 h-5"></i>
+                    <span>Read Server Rules</span>
+                </a>
 
-                <!-- Copy IP Button --><button id="copy-button" class="flex items-center space-x-2 bg-accent hover:bg-cyan-500 text-gray-900 font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.03] shadow-lg active:scale-[0.98]">
-                    <i data-lucide="copy" class="w-5 h-5"></i>
-                    <span id="button-text">Copy IP</span>
-                </button>
+                <a href="https://discord.gg/psrNq7w69q" target="_blank" class="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.03] shadow-lg active:scale-[0.98]">
+                    <i data-lucide="message-square" class="w-5 h-5"></i>
+                    <span>Join Discord</span>
+                </a>
             </div>
-            <!-- Message Box (Hidden initially) --><div id="message-box" class="mt-6 text-sm py-2 px-4 rounded-lg inline-block transition-opacity duration-300 opacity-0" style="background-color: rgba(34, 34, 34, 0.7);">
-                <!-- Content injected by JavaScript --></div>
+            
+            <!-- Message Box for JS -->
+            <div id="message-box" class="mt-6 text-sm py-2 px-4 rounded-lg inline-block transition-opacity duration-300 opacity-0" style="background-color: rgba(34, 34, 34, 0.7);">
+            </div>
         </div>
     </header>
 
-    <!-- Key Information Section (Features) (Glass effect) --><section id="features" class="py-20 md:py-32 bg-glass-dark-30 glass-effect relative z-10">
+    
+    <!-- Features Section -->
+    <section id="features" class="py-20 md:py-32 bg-glass-dark-60 glass-effect relative z-10">
         <div class="container mx-auto px-4 relative">
             <h2 class="text-4xl font-bold text-center mb-16 text-gray-100">
                 Key Features & Structure
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                <!-- Feature Cards: (Glass effect) --><div class="bg-glass-dark-40 p-6 md:p-8 rounded-xl border-t-4 border-accent card-shadow transform hover:translate-y-[-4px] transition duration-300 glass-effect">
+            
+            <!-- Row 1 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Geyser/Crossplay -->
+                <div class="bg-glass-dark-85 p-6 md:p-8 rounded-xl border-t-4 border-accent card-shadow transform hover:translate-y-[-4px] transition duration-300 glass-effect">
                     <div class="flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full mb-4">
-                         <i data-lucide="axe" class="w-6 h-6 color-accent"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-3">Vanilla+ Survival</h3>
-                    <p class="text-gray-400">
-                        Experience classic Minecraft survival, enhanced with custom world generation, player homes, and quality-of-life plugins. <strong>100 available slots</strong> for our communities.
-                    </p>
-                </div>
-
-                <div class="bg-glass-dark-40 p-6 md:p-8 rounded-xl border-t-4 border-accent card-shadow transform hover:translate-y-[-4px] transition duration-300 glass-effect">
-                    <div class="flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full mb-4">
-                        <i data-lucide="mail" class="w-6 h-6 color-accent"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-3">Community Partnerships</h3>
-                    <p class="text-gray-400">
-                        We host specialized worlds for E-Sports and dedicated communities. Interested organizations should <strong>email <a href="mailto:contact@damvan.ca" class="color-accent hover:underline">contact@damvan.ca</a></strong> to inquire about partnership and access.
-                    </p>
-                </div>
-
-                <div class="bg-glass-dark-40 p-6 md:p-8 rounded-xl border-t-4 border-accent card-shadow transform hover:translate-y-[-4px] transition duration-300 glass-effect">
-                    <div class="flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full mb-4">
-                        <i data-lucide="users" class="w-6 h-6 color-accent"></i>
+                         <i data-lucide="smartphone" class="w-6 h-6 color-accent"></i>
                     </div>
                     <h3 class="text-2xl font-semibold mb-3">Seamless Crossplay</h3>
                     <p class="text-gray-400">
-                        Our server environment supports both <strong>Java and Bedrock players</strong> simultaneously, ensuring that all community members can connect and play together effortlessly.
+                        Powered by <strong>Geyser-Spigot</strong>, our server supports both <strong>Java and Bedrock players</strong> simultaneously. Join from any device and play with your friends.
+                    </p>
+                </div>
+
+                <!-- BlueMap -->
+                <div class="bg-glass-dark-85 p-6 md:p-8 rounded-xl border-t-4 border-accent card-shadow transform hover:translate-y-[-4px] transition duration-300 glass-effect">
+                    <div class="flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full mb-4">
+                        <i data-lucide="map" class="w-6 h-6 color-accent"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3">Live Dynamic Map</h3>
+                    <p class="text-gray-400">
+                        Explore our world in real-time with <strong>BlueMap</strong>, a high-performance 3D web map. Find bases, plan projects, and see the community's creations.
+                    </p>
+                </div>
+
+                <!-- LevelledMobs -->
+                <div class="bg-glass-dark-85 p-6 md:p-8 rounded-xl border-t-4 border-accent card-shadow transform hover:translate-y-[-4px] transition duration-300 glass-effect">
+                    <div class="flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full mb-4">
+                        <i data-lucide="shield-alert" class="w-6 h-6 color-accent"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3">Enhanced Challenge</h3>
+                    <p class="text-gray-400">
+                        Using <strong>LevelledMobs</strong>, our world offers a dynamic challenge. Mobs get stronger, drop custom loot, and keep the late-game experience exciting.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- AdvancedServerList / TAB -->
+                <div class="bg-glass-dark-85 p-6 md:p-8 rounded-xl border-t-4 border-accent card-shadow transform hover:translate-y-[-4px] transition duration-300 glass-effect">
+                    <div class="flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full mb-4">
+                         <i data-lucide="sliders-horizontal" class="w-6 h-6 color-accent"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3">Custom Experience</h3>
+                    <p class="text-gray-400">
+                        We provide a unique, branded server experience using <strong>AdvancedServerList</strong> and <strong>TAB</strong> for a clean, professional in-game look.
+                    </p>
+                </div>
+
+                <!-- Essentials / Graves -->
+                <div class="bg-glass-dark-85 p-6 md:p-8 rounded-xl border-t-4 border-accent card-shadow transform hover:translate-y-[-4px] transition duration-300 glass-effect">
+                    <div class="flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full mb-4">
+                        <i data-lucide="home" class="w-6 h-6 color-accent"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3">Community & QOL</h3>
+                    <p class="text-gray-400">
+                        With <strong>EssentialsSpawn</strong>, <strong>EssentialsDiscordLink</strong>, and <strong>Graves</strong>, we focus on quality-of-life features like /sethome and item recovery.
+                    </p>
+                </div>
+
+                <!-- Spark / ViaVersion -->
+                <div class="bg-glass-dark-85 p-6 md:p-8 rounded-xl border-t-4 border-accent card-shadow transform hover:translate-y-[-4px] transition duration-300 glass-effect">
+                    <div class="flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full mb-4">
+                        <i data-lucide="activity" class="w-6 h-6 color-accent"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3">Optimized & Stable</h3>
+                    <p class="text-gray-400">
+                        Running <strong>Spark</strong>, <strong>ViaVersion</strong>, and <strong>Hurricane</strong>, our server is optimized for minimal lag and supports a wide range of client versions.
                     </p>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Contact & Join Us CTA Section (Glass effect) -->
-    <section class="py-16 bg-glass-dark-30 glass-effect relative z-10">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Join the <span class="color-accent">DamMinecraft</span> Community</h2>
-            <p class="text-lg text-gray-400 mb-8">
-                Connect with our established community and start your journey today. We support all versions from 1.18+.
-            </p>
-            
-            <!-- === CHANGED: Added a flex container === -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <!-- Call to Action Button with New Accent Color -->
-                <a href="#features" class="bg-accent hover:bg-cyan-500 text-gray-900 font-bold py-3 px-8 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg active:scale-95 inline-flex items-center space-x-2">
-                    <i data-lucide="play" class="w-5 h-5"></i>
-                    <span>Get Started Now</span>
-                </a>
-                <!-- New: Join Discord Button (Changed to inline-flex for consistency) -->
-                <a href="https://discord.gg/psrNq7w69q" target="_blank" class="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.03] shadow-lg active:scale-[0.98]">
-                    <i data-lucide="message-square" class="w-5 h-5"></i>
-                    <span>Join The DamVan Discord</span>
-                </a>
+    
+    <!-- Rules Section -->
+    <section id="rules" class="py-20 md:py-32 bg-glass-dark-60 glass-effect relative z-10">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="text-center mb-16">
+                <i data-lucide="scroll" class="w-16 h-16 color-accent mx-auto mb-4"></i>
+                <h2 class="text-4xl font-bold text-center text-gray-100">
+                    Official Server Rules
+                </h2>
+                <p class="text-lg text-gray-400 mt-4">
+                    Welcome to DamMinecraft! Our goal is to create a fun, fair, and long-lasting community.
+                    <br>
+                    Please read the rules carefully before joining.
+                </p>
             </div>
-            <!-- === END OF CHANGE === -->
 
+            <!-- Accordion Container -->
+            <div class="space-y-4">
+            
+                <!-- Section 1 -->
+                <details class="glass-effect rounded-lg">
+                    <summary class="text-xl font-semibold text-white">Section 1: Community Respect & Chat Rules</summary>
+                    <div class="accordion-content prose prose-invert text-white prose-lg max-w-none prose-headings:color-accent prose-headings:font-semibold prose-a:color-accent prose-a:font-normal hover:prose-a:underline">
+                        <p>This is the most important section. We are a community first.</p>
+                        <ul>
+                            <li><strong>Be Respectful:</strong> Absolutely no harassment, bullying, racism, sexism, homophobia, transphobia, or any other form of bigotry or hate speech. This is a zero-tolerance policy.</li>
+                            <li><strong>No Spamming:</strong> Do not spam the chat with repeated messages, excessive capital letters, or strings of random characters.</li>
+                            <li><strong>Keep it PG-13:</strong> Avoid excessive swearing. Do not engage in overly sexual or graphically violent discussions.</li>
+                            <li><strong>No Sensitive Topics:</strong> To avoid conflict, do not discuss sensitive real-world topics like politics or religion.</li>
+                            <li><strong>Respect Staff:</strong> Listen to and respect the decisions of Admins and Mods. Arguing with staff after a final decision has been made is not productive and may result in a mute.</li>
+                            <li><strong>No Advertising:</strong> Do not advertise other Minecraft servers, Discord servers, or personal social media without permission.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- Section 2 -->
+                <details class="glass-effect rounded-lg">
+                    <summary class="text-xl font-semibold text-white">Section 2: Griefing, Stealing & Pranks</summary>
+                    <div class="accordion-content prose prose-invert text-white prose-lg max-w-none prose-headings:color-accent prose-headings:font-semibold prose-a:color-accent prose-a:font-normal hover:prose-a:underline">
+                        <p>Protecting your builds and items is our top priority.</p>
+                        <ul>
+                            <li><strong>No Griefing:</strong> Do not destroy, deface, or otherwise damage another player's build. This includes breaking blocks, using lava/water/TNT, or damaging the landscape around a base.</li>
+                            <li><strong>No Stealing:</strong> Do not take items from another player's chests, item frames, armor stands, or shulker boxes. If it's not yours, don't touch it.</li>
+                            <li><strong>Farms:</strong> Do not use another player's farm without their permission. If you are given permission, you must replant any crops you harvest.</li>
+                            <li><strong>Pranks:</strong> Pranks are allowed only if they are 100% non-destructive. A "prank" that involves TNT, lava, fire, or breaking any blocks is considered griefing. You must clean up your own prank within 48 hours.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- Section 3 -->
+                <details class="glass-effect rounded-lg">
+                    <summary class="text-xl font-semibold text-white">Section 3: Hacking, Cheats & Exploits</summary>
+                    <div class="accordion-content prose prose-invert text-white prose-lg max-w-none prose-headings:color-accent prose-headings:font-semibold prose-a:color-accent prose-a:font-normal hover:prose-a:underline">
+                        <p>We are a "vanilla-ish" server. Fair play is mandatory.</p>
+                        <ul>
+                            <li><strong>No Hacked Clients:</strong> Any client that gives you an unfair advantage is forbidden (X-Ray, Kill-Aura, Flight, etc.).</li>
+                            <li><strong>No X-Ray:</strong> Using X-Ray texture packs or mods is considered cheating.</li>
+                            <li><strong>No Exploits:</strong> Do not abuse any game or server bugs (duping, seed cracking, etc.). If you find a bug, report it to staff immediately.</li>
+                            <li><strong>Allowed Mods:</strong> Client-side performance mods (Optifine, Sodium), Litematica (schematic-only), and Mini-maps (no player/cave display) are generally allowed. Ask staff if unsure.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- Section 4 -->
+                <details class="glass-effect rounded-lg">
+                    <summary class="text-xl font-semibold text-white">Section 4: Building & Environment</summary>
+                    <div class="accordion-content prose prose-invert text-white prose-lg max-w-none prose-headings:color-accent prose-headings:font-semibold prose-a:color-accent prose-a:font-normal hover:prose-a:underline">
+                        <p>Be a good neighbor and keep the world clean.</p>
+                        <ul>
+                            <li><strong>Respect Base Boundaries:</strong> Do not build your base within 200 blocks of another player's claimed base without their explicit permission.</li>
+                            <li><strong>Spawn:</strong> Do not build private bases or large farms within 500 blocks of Spawn (0,0). This area is for community builds.</li>
+                            <li><strong>Clean Up Your Mess:</strong> Do not leave floating treetops, 1x1 "nerd poles," or random patches of destruction.</li>
+                            <li><strong>Claiming:</strong> Clearly mark your base and property lines with signs or fences.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- Section 5 -->
+                <details class="glass-effect rounded-lg">
+                    <summary class="text-xl font-semibold text-white">Section 5: Server Performance & Lag</summary>
+                    <div class="accordion-content prose prose-invert text-white prose-lg max-w-none prose-headings:color-accent prose-headings:font-semibold prose-a:color-accent prose-a:font-normal hover:prose-a:underline">
+                        <p>Help us keep the server running smoothly for everyone.</p>
+                        <ul>
+                            <li><strong>Redstone:</strong> All complex redstone contraptions must have an on/off switch and be turned off when you are not using them.</li>
+                            <li><strong>Entity Limits:</strong> Do not create massive, overcrowded animal farms (e.g., no more than 50 of one animal type per chunk).</li>
+                            <li><strong>Mob Farms:</strong> Large-scale mob farms must be approved by staff before construction.</li>
+                            <li><strong>No Lag Machines:</strong> Intentionally building devices to lag or crash the server will result in a permanent ban.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- Section 6 -->
+                <details class="glass-effect rounded-lg">
+                    <summary class="text-xl font-semibold text-white">Section 6: PvP (Player vs. Player)</summary>
+                    <div class="accordion-content prose prose-invert text-white prose-lg max-w-none prose-headings:color-accent prose-headings:font-semibold prose-a:color-accent prose-a:font-normal hover:prose-a:underline">
+                        <ul>
+                            <li><strong>Consensual PvP Only:</strong> PvP is disabled by default. You may only engage in combat if all players involved clearly agree to it in chat.</li>
+                            <li><strong>No "Trolling":</strong> Do not repeatedly kill a player or trap them in a death loop. All items must be returned after a consensual fight unless agreed upon beforehand.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- Section 7 -->
+                <details class="glass-effect rounded-lg">
+                    <summary class="text-xl font-semibold text-white">Section 7: Staff & Rule Enforcement</summary>
+                    <div class="accordion-content prose prose-invert text-white prose-lg max-w-none prose-headings:color-accent prose-headings:font-semibold prose-a:color-accent prose-a:font-normal hover:prose-a:underline">
+                        <p>How to get help and what happens if you break a rule.</p>
+                        <ul>
+                            <li><strong>How to Report:</strong> If you have been griefed or stolen from, do not retaliate. Take screenshots, note the coordinates, and report it to a staff member privately.</li>
+                            <li><strong>Enforcement:</strong> Breaking rules will result in a warning, kick, temp-ban, or permanent ban, depending on the severity.</li>
+                            <li><strong>Staff Will NOT:</strong> Spawn items, teleport you (unless stuck), or give you ranks.</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Join Server Section -->
+            <div class="mt-20 text-center">
+                <h3 class="text-3xl font-bold text-white mb-6">Join the Server</h3>
+                <p class="text-gray-400 mb-8 max-w-lg mx-auto">
+                    By checking the box, you agree to follow all the rules listed above.
+                    <br>
+                    Ignorance of a rule is not an excuse for breaking it.
+                </p>
+
+                <!-- Agreement Checkbox -->
+                <div class="flex items-center justify-center space-x-3 mb-8">
+                    <input type="checkbox" id="agree-checkbox" class="h-5 w-5 rounded bg-gray-700 border-gray-600 text-accent-dark focus:ring-accent">
+                    <label for="agree-checkbox" class="text-gray-300">I have read and agree to the server rules.</label>
+                </div>
+
+                <!-- IP Display & Copy Button -->
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    
+                    <!-- IP Display Box (Blurred by default) -->
+                    <div id="ip-display" class="bg-glass-ui text-lg font-mono px-6 py-3 rounded-lg border-2 border-accent-light text-white shadow-xl card-shadow blurred">
+                        playmc.damvan.ca
+                    </div>
+
+                    <!-- Copy IP Button (Disabled by default) -->
+                    <button id="copy-button" disabled class="flex items-center space-x-2 bg-accent text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed bg-accent-dark active:scale-[0.98]">
+                        <i data-lucide="copy" class="w-5 h-5"></i>
+                        <span id="button-text">Copy IP</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Footer (Glass effect) --><footer class="bg-glass-dark-20 glass-effect py-10 border-t border-gray-800 relative z-10">
+    
+    <!-- Footer -->
+    <footer class="bg-glass-nav glass-effect py-10 border-t border-black/20 relative z-10">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-sm text-white-500 mb-4">
-                &copy; 2025 DamVan Company. All Rights Reserved.
+            <p class="text-sm text-gray-500 mb-4">
+                &copy; 2025 The DamMinecraft SMP. A DamVan Company Property. All Rights Reserved.
             </p>
             <div class="flex justify-center space-x-6">
-                <!-- Social Links Placeholder - Use color-accent for hover --><a href="mailto:contact@damvan.ca" class="text-gray-400 hover:color-accent transition duration-200" aria-label="Email Contact">
+                
+                <a href="mailto:contact@damvan.ca" class="text-gray-400 hover:color-accent transition duration-200" aria-label="Email Contact">
                     <i data-lucide="mail" class="w-6 h-6"></i>
                 </a>
-                <!-- Discord Link --><a href="https://discord.gg/psrNq7w69q" target="_blank" class="text-gray-400 hover:color-accent transition duration-200" aria-label="DamMinecraft Discord Server">
+                
+                <a href="https://discord.gg/psrNq7w69q" target="_blank" class="text-gray-400 hover:color-accent transition duration-200" aria-label="DamMinecraft Discord Server">
                     <i data-lucide="message-square" class="w-6 h-6"></i>
                 </a>
-                <!-- New: Website Link --><a href="https://damvan.ca" target="_blank" class="text-gray-400 hover:color-accent transition duration-200" aria-label="DamVan Company Website">
+                
+                <a href="https://damvan.ca" target="_blank" class="text-gray-400 hover:color-accent transition duration-200" aria-label="DamVan Company Website">
                     <i data-lucide="globe" class="w-6 h-6"></i>
                 </a>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript for IP Copy functionality --><script>
+    
+    <!-- Main JavaScript -->
+    <script>
         const copyButton = document.getElementById('copy-button');
         const ipDisplay = document.getElementById('ip-display');
         const buttonText = document.getElementById('button-text');
         const messageBox = document.getElementById('message-box');
-        // Updated Server IP
+        const agreeCheckbox = document.getElementById('agree-checkbox');
         const serverIp = 'playmc.damvan.ca';
 
         /**
@@ -229,18 +481,17 @@
             
             setTimeout(() => {
                 messageBox.classList.add('opacity-0');
-                // Hide completely after fade out
                 setTimeout(() => {
                     messageBox.textContent = '';
                 }, 300);
             }, 3000);
         }
 
-        // Handles copying text to the clipboard using document.execCommand (reliable in iframes)
+        // Handles copying text to the clipboard
         function copyToClipboard(text) {
             const textarea = document.createElement('textarea');
             textarea.value = text;
-            textarea.style.position = 'fixed'; // Prevents scrolling to the bottom
+            textarea.style.position = 'fixed'; 
             textarea.style.opacity = '0';
             document.body.appendChild(textarea);
             textarea.select();
@@ -263,15 +514,29 @@
                 document.body.removeChild(textarea);
                 console.error('Copy failed:', err);
                 showMessage('Could not copy IP. Please copy it manually: ' + text, 'text-red-400');
-                    return false;
-                }
+                return false;
             }
+        }
         
-            copyButton.addEventListener('click', () => {
+        // Event Listener for the Copy Button
+        copyButton.addEventListener('click', () => {
+            if (!copyButton.disabled) {
                 copyToClipboard(serverIp);
-            });
+            }
+        });
 
-        // Initialize Lucide Icons for display
+        // Event Listener for the Checkbox
+        agreeCheckbox.addEventListener('change', () => {
+            if (agreeCheckbox.checked) {
+                copyButton.disabled = false;
+                ipDisplay.classList.remove('blurred');
+            } else {
+                copyButton.disabled = true;
+                ipDisplay.classList.add('blurred');
+            }
+        });
+
+        // Initialize Lucide Icons
         lucide.createIcons();
 
     </script>
